@@ -1,9 +1,10 @@
 #ifndef SOCKETCLASS_H
 #define SOCKETCLASS_H
 //bibliotecas para utilização no socket
+#include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <Winsock2.h> //no linux trocar para arpa
+#include <arpa/inet.h> //p disponibilizar tipos como in_port_t ou estruturas in_addr
 
 #include <string.h>
 #include <iostream>
@@ -14,7 +15,7 @@ class SocketClass //classe do socket para manter as relações
         SocketClass();             //instanciação da classe
         virtual ~SocketClass();
 
-        SocketClass(int porta, string host);
+        SocketClass(int porta, std::string host);
 
         void configSocket(struct endereçoSocket &servidor, int porta, string host); //config do socket
 
@@ -34,7 +35,7 @@ class SocketClass //classe do socket para manter as relações
 
         void xSocket(int &socketAux); //fecha socket
 
-        getEndereçoCliente();  //pega o endereço do cliente
+        sockaddr_in getEndCliente();  //pega o endereço do cliente... tipo sockaddr_in
 
     protected:
 
@@ -44,11 +45,11 @@ class SocketClass //classe do socket para manter as relações
 
         int socketAux; //variável para auxiliar durante operações do socket
 
-        struct sockaddr_in conectEndereçoServer;                 //funciona como auxiliar para pegar o endereço do servidor
+        struct sockaddr_in conectEndServer;                 //funciona como auxiliar para pegar o endereço do servidor
 
-        struct sockaddr_in receberEndereçoCliente;              //funciona como auxiliar  para receber o endereço do cliente
+        struct sockaddr_in receberEndCliente;              //funciona como auxiliar  para receber o endereço do cliente
 
-        socklen_t tamanhoEndereçoCliente;     // captura tamanho do endereço do cliente
+        socklen_t tamanhoEndCliente;     // captura tamanho do endereço do cliente
 
 };
 
