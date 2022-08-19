@@ -1,7 +1,7 @@
 #include "SocketClass.h"
 
 
-SocketClass::SocketClass(int porta, string host)
+SocketClass::SocketClass(int porta, std::string host)
 {
     //ctor
     socketAux=socket(AF_INET,SOCK_STREAM, 0);
@@ -87,9 +87,9 @@ void SocketClass::void Socket::setTimeOut(int &socketAux, int tempo) { //Determi
 
 
 
-sockaddr_in SocketClass::getEndereçoCliente() {
+sockaddr_in SocketClass::getEndCliente() {
 
-    return endereçoCliente;
+    return receberEndCliente;
 }
 
 
