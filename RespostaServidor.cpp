@@ -16,13 +16,13 @@
 
 void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in endereçoCliente, string dir){
     if(Debug){
-       cout << "ID DO THREAD: " << thread_id << endl; 
+       cout << "ID DO THREAD: " << thread_id << endl;
     }
     string strRequest = "";
     vector<string> difusao;
     vector<string> leituraDeLinhas;
 
-    if (clienteSockfd == -1) { 
+    if (clienteSockfd == -1) {
         return;
     }
 
@@ -32,7 +32,7 @@ void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in 
         cout << "Conexão iniciada com o cliente " << ipstr << ":" << ntohs(endereçoCliente.sin_port) << endl << endl;
     }
     databuff datarec = socli.sockrecv(clienteSockfd);
-    if(datarec.bufflen > 0){ 
+    if(datarec.bufflen > 0){
         strRequest = string(datarec.dataChar, 0, datarec.bufflen);
         if(Debug){
             cout<< strRequest << endl;
@@ -52,12 +52,12 @@ void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in 
             else {
                 throw (leituraDeLinhas[0]);
             }
-        } catch(string n) { 
+        } catch(string n) {
             int len = 0;
             string aux = "", data="";
             aux = "400 BAD REQUEST\n\r";
             len = aux.size();
-            data = getStatus(3, len, "html"); 
+            data = getStatus(3, len, "html");
             if(Debug){
                 cout << data << endl;
             }
@@ -95,12 +95,12 @@ int RespostaServidor::getControl(int thread_id, int clienteSockfd, sockaddr_in e
     }
     n = data = "";
     if(fluxoArquivos(raiz, len, n)) {
-        data = getStatus(1, len, difusao); 
+        data = getStatus(1, len, difusao);
         data += n;
-        socli.socksendk(clienteSockfd, data); 
+        socli.socksendk(clienteSockfd, data);
         handleRequest(thread_id, clienteSockfd,endereçoCliente, dir);
     } else {
-        data = getStatus(2, len, "html"); 
+        data = getStatus(2, len, "html");
         data+= n;
         socli.socksendk(clienteSockfd, data);
         socli.closesock(clienteSockfd);
@@ -108,18 +108,18 @@ int RespostaServidor::getControl(int thread_id, int clienteSockfd, sockaddr_in e
     return 0;
 }
 
-bool RespostaServidor::fluxoArquivos(string raiz, int &len, string &n) { 
+bool RespostaServidor::fluxoArquivos(string raiz, int &len, string &n) {
     fstream arquivo;
     arquivo.open(raiz, fstream::in |fstream::out | fstream::binary);
 
     if(arquivo.is_open()){
-        arquivo.seekg(0, ios::end); 
-        len = arquivo.tellg(); 
+        arquivo.seekg(0, ios::end);
+        len = arquivo.tellg();
         leituraArquivo(arquivo, n, len);
         return true;
     }
     else {
-        arquivo.open("pasta/404.html", fstream::in |fstream::out | fstream::binary);
+        arquivo.open("arquivos/404.html", fstream::in |fstream::out | fstream::binary);
         if(arquivo.is_open()) {
             arquivo.seekg(0, ios::end);
             len = arquivo.tellg();
@@ -155,7 +155,7 @@ string RespostaServidor::getStatus(int resp, int len, string difusao) {
     timeinfo = gmtime (&rawtime);
     strftime(buff, sizeof(buff), "%a, %d %b %Y %H:%M:%S GMT\r\n", timeinfo);
 
-    if(resp == 1) { 
+    if(resp == 1) {
         text = "HTTP/1.1 200 OK\r\n"
                "Date: " + string(buff) +
                "Content-Length: " + to_string(len) + "\r\n"
@@ -163,7 +163,7 @@ string RespostaServidor::getStatus(int resp, int len, string difusao) {
                "Connection: Keep-Alive\r\n"
                "Content-type: " + mim.getType(difusao) + "; charset=UTF-8\r\n\r\n";
     }
-    else if(resp == 2){ 
+    else if(resp == 2){
         text = "HTTP/1.1 404 NOT FOUND\r\n"
                 "Date: " + string(buff) +
                 "Content-Length: " + to_string(len) + "\r\n"

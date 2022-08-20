@@ -31,6 +31,12 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="RespostaServidor.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="RespostaServidor.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="SocketClass.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
@@ -41,6 +47,9 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="buffer.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="main.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="servidorHttp.cpp">
