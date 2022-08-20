@@ -37,6 +37,12 @@
 		<Unit filename="SocketClass.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="buffer.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="buffer.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="servidorHttp.cpp">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
