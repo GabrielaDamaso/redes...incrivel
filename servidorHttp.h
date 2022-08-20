@@ -15,6 +15,7 @@
 
 #include<SocketClass.h>
 #include<thread>
+#include<RespostaServidor.h>
 
 class ServidorHttp{
     public:

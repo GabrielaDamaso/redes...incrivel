@@ -19,6 +19,15 @@
 
 #include <string.h>
 #include <iostream>
+
+#include "buffer.h"
+#define tamMaxRecv 5120   //5mb
+
+struct Buffer{       //uma estrutura de buffer... criando um buffer de char q fara a requisição
+    char dadosC[tamMaxRecv];
+    int tamBuffer;
+};
+
 class SocketClass //classe do socket para manter as relações
 {
     public:
@@ -28,17 +37,17 @@ class SocketClass //classe do socket para manter as relações
 
         SocketClass(int porta, std::string host);
 
-        void configSocket(struct endereçoSocket &servidor, int porta, string host); //config do socket
+        void configSocket(struct endereçoSocket &servidor, int porta, std::string host); //config do socket
 
         int connectionSocket(int &socketAux, struct endereçoSocket &endereçoCliente); // conexão do socket
 
-        int listenSocket(int req ) //ouvindo requisições do socket
+        int listenSocket(int req ); //ouvindo requisições do socket
 
         int askOK();          //aceita as requisições do socket
 
         databuff bufferReceptor(int &socketAux);
 
-        int asksendSocket(int &socketAux, string x); //resultado de requisições
+        int asksendSocket(int &socketAux, std::string x); //resultado de requisições
 
         void tempoAberto(int &socketAux, int tempo); //tempo de conexão do socket
 

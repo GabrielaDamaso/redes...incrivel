@@ -26,13 +26,13 @@ class RespostaServidor
     public:
         RespostaServidor() {};
         virtual ~RespostaServidor() {};
-        void getResponse(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, string dir);
-        int getControl(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, string raiz, string difusao, string dir);
-        vector<string> split(string x, char delete);
-        bool arqStream(string raiz, int &len, string &n);
-        void readarquivo(fstream &arquivo, string &n, int len);
-        string getStatus(int resposta, int len, string difusao);
-        int	operator()(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, string dir)
+        void getResponse(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, std::string dir);
+        int getControl(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, std::string raiz, std::string difusao, std::string dir);
+        std::vector<string> split(std::string x, char delete);
+        bool arqStream(std::string raiz, int &len, std::string &n);
+        void readarquivo(fstream &arquivo, std::string &n, int len);
+        std::string getStatus(int resposta, int len, std::string difusao);
+        int	operator()(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, std::string dir)
         {
             getResponse(thread_id, clientSockfd, endereçoCliente, dir);
             return (0);
