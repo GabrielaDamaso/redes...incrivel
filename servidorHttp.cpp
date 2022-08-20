@@ -1,3 +1,14 @@
+/******************************************
+ * Trabalho de Redes de Computadores      *
+ * IFMG - BAMBUÍ 08/2022                  *
+ * Alunos:                                *
+ * Higor Pereira,                         *
+ * Yanky Jhonatha,                        *
+ * Gabriela Dâmaso.                       *
+ *                                        *
+ ******************************************/
+
+
 #include "servidorHttp.h"
 
 ServidorHttp::ServidorHttp(int porta, string host, string caminho){
