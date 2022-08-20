@@ -1,3 +1,15 @@
+/******************************************
+ * Trabalho de Redes de Computadores      *
+ * IFMG - BAMBUÍ 08/2022                  *
+ * Alunos:                                *
+ * Higor Pereira,                         *
+ * Yanky Jhonatha,                        *
+ * Gabriela Dâmaso.                       *
+ *                                        *
+ ******************************************/
+
+
+
 #include "RespostaServidor.h"
 
 #define Debug false

@@ -1,3 +1,13 @@
+/******************************************
+ * Trabalho de Redes de Computadores      *
+ * IFMG - BAMBUÍ 08/2022                  *
+ * Alunos:                                *
+ * Higor Pereira,                         *
+ * Yanky Jhonatha,                        *
+ * Gabriela Dâmaso.                       *
+ *                                        *
+ ******************************************/
+
 #ifndef RESPOSTASERVIDOR_H
 #define RESPOSTASERVIDOR_H
 
@@ -24,7 +34,7 @@ class RespostaServidor
         string getStatus(int resposta, int len, string difusao); 
         int	operator()(int thread_id, int clientSockfd, sockaddr_in endereçoCliente, string dir) 
         {
-            handleRequest(thread_id, clientSockfd, endereçoCliente, dir);
+            getResponse(thread_id, clientSockfd, endereçoCliente, dir);
             return (0);
         }
     private:
