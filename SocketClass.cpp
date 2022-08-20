@@ -19,22 +19,22 @@ SocketClass::SocketClass(int porta, std::string host)
     socketAux=socket(AF_INET,SOCK_STREAM, 0);
     int aux = 1;
     if(setSocket(socketAux,SOL_SOCKET, SO_REUSEADDR,&aux,sizeof(int)) == -1){
-        cout <<" Não foi possível criar o socket de maneira adequada.\n";
+        std::cout <<" Não foi possível criar o socket de maneira adequada.\n";
 
     }
 
     criarConfigSocket(servidorEndereço, porta, host);
     if(bind(socketAux,(struct sockaddr*)&servidorEndereço, sizeof(servidorEndereço)) ==-1){
-      cout << "Erro, verifique se a porta já não está ocupada.\n"  ;
+      std::cout << "Erro, verifique se a porta já não está ocupada.\n"  ;
         close(socketAux);
     }
 
-    cout <<"Ouvindo a porta: " << porta << endl;
+    std::cout <<"Ouvindo a porta: " << porta << std::endl;
 }
 
 
 
-SocketClass::criarConfigSocket(struct sockaddr_in& servidor,int porta, string host){
+void SocketClass::criarConfigSocket(struct sockaddr_in& servidor,int porta, std::string host){
     inet_aton(host.c_str(), &servidor.sin_addr);
     servidor.sin_port = htons(porta);
     servidor.sin_family = AF_INET;
@@ -63,23 +63,23 @@ int SocketClass::askOK() {
 
 
 
-databuff SocketClass::bufferReceptor(int &socketAux){
+Buffer SocketClass::bufferReceptor(int &socketAux){
 
-    databuff datarec;
-    datarec.bufflen = recv(socketAux, datarec.dataChar, maxSizeRecv, 0);
+    Buffer datarec;
+    datarec.tamBuffer = recv(socketAux, datarec.dadosC, maxSizeRecv, 0);
     return datarec;
 }
 
 
 
-int SocketClass::asksendSocket(int &socketAux, string x) {
+int SocketClass::asksendSocket(int &socketAux, std::string x) {
 
     return send(socketAux, x.c_str(), x.size(), 0);
 }
 
 
 
-void SocketClass::void Socket::setTimeOut(int &socketAux, int tempo) { //Determinação do timer de conexão
+void SocketClass::setTimeOut(int &socketAux, int tempo) { //Determinação do timer de conexão
 
     valortempo tv;
     tv.tv_sec = tempo;

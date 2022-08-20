@@ -2,7 +2,7 @@
 #define BUFFER_H_INCLUDED
 
 #include <string.h>
-#define tamMaxRecv 4048;   //2mb
+#define tamMaxRecv 5120   //5mb
 
 class Buffer{
     public:
@@ -13,9 +13,9 @@ class Buffer{
         int getTamMaxRecv();
     private:
         int tamBuffer;
-        char dadosC(tamMaxRecv)
+        char dadosC(tamMaxRecv);
 
-}
+};
 
 
 #endif // BUFFER_H_INCLUDED
