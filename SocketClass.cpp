@@ -10,7 +10,7 @@
 
 
 
-#include "SocketClass.h"
+#include "SocketClass.h" //inclui o aqruivo .h
 
 
 SocketClass::SocketClass(int porta, std::string host)
@@ -29,7 +29,7 @@ SocketClass::SocketClass(int porta, std::string host)
         close(socketAux);
     }
 
-    std::cout <<"Ouvindo a porta: " << porta << std::endl;
+    std::cout <<"Ouvindo a porta: " << porta << std::endl; //exibe mensagem entre aspas e mostra o valor atribuido a variavel porta 
 }
 
 

@@ -9,7 +9,7 @@
  ******************************************/
 
 
-#include "servidorHttp.h"
+#include "servidorHttp.h" //inclui o aqruivo .h
 
 ServidorHttp::ServidorHttp(int porta, string host, string caminho){
     this.caminho = caminho;   // definindo caminho desejado p criar o servidor

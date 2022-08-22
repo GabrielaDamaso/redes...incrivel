@@ -5,11 +5,11 @@ Buffer::Buffer(){
     tamBuffer =0;   //zera o
 }
 
-char* Buffer::getDados(){ return dadosC; }
+char* Buffer::getDados(){ return dadosC; } //pega os dados
 
-void Buffer::setTamBuffer(){ this->tamBuffer= tamBuffer; }
+void Buffer::setTamBuffer(){ this->tamBuffer= tamBuffer; } //define tamnho do buffer
 
-int Buffer::getTamMaxRecv(){ return tamMaxRecv;  }
+int Buffer::getTamMaxRecv(){ return tamMaxRecv;  } //pega o tamanho maximo do buffer
 
-int Buffer::tamBuffer{ return tamBuffer;  }
+int Buffer::tamBuffer{ return tamBuffer;  } 
 
