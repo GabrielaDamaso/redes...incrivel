@@ -89,16 +89,6 @@ void SocketClass::setTimeOut(int &socketAux, int tempo) { //Determinação do ti
 
 
 
-(int &socketAux, int tempo) {
-
-    valortempo tv;
-    tv.tv_sec = tempo;
-    tv.tv_usec = 0;
-    setsockopt(socketAux, SOL_SOCKET, SO_RCVTIMEO,(char *)&tv,sizeof(struct valortempo));
-}
-
-
-
 sockaddr_in SocketClass::getEndCliente() {
 
     return receberEndCliente;
