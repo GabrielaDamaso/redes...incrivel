@@ -23,7 +23,7 @@
 #include "buffer.h"
 #define tamMaxRecv 5120   //5mb
 
-struct Buffer{       //uma estrutura de buffer... criando um buffer de char q fara a requisição
+struct Bufferzin{       //uma estrutura de buffer... criando um buffer de char q fara a requisição
     char dadosC[tamMaxRecv];
     int tamBuffer;
 };
@@ -39,13 +39,15 @@ class SocketClass //classe do socket para manter as relações
 
         void configSocket(struct endereçoSocket &servidor, int porta, std::string host); //config do socket
 
+        void SocketClass::criarConfigSocket(struct sockaddr_in& servidor,int porta, std::string host);
+
         int connectionSocket(int &socketAux, struct endereçoSocket &endereçoCliente); // conexão do socket
 
         int listenSocket(int req ); //ouvindo requisições do socket
 
         int askOK();          //aceita as requisições do socket
 
-        databuff bufferReceptor(int &socketAux);
+        Buffer bufferReceptor(int &socketAux);
 
         int asksendSocket(int &socketAux, std::string x); //resultado de requisições
 
