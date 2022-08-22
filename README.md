@@ -1,7 +1,7 @@
 # Servidor Web Multithreaded
 Disciplina Redes de Computadores.
 
-Alunos: Gabriela Damâso, [Higor Pereira](https://github.com/higorito), [Yanky Jhonatha](https://github.com/Jhonatha1)
+Alunos: [Gabriela Damâso](https://github.com/GabrielaDamaso), [Higor Pereira](https://github.com/higorito), [Yanky Jhonatha](https://github.com/Jhonatha1)
 
 Professor: Samuel Dias
 
