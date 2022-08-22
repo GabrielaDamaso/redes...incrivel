@@ -147,7 +147,7 @@ void RespostaServidor::leituraArquivo(fstream &arquivo, std::string &n, int tama
 
 std::string RespostaServidor::getStatus(int resp, int tamanho, std::string difusao) {
     std::string text;
-    mimetype mim;
+    guardaTipo gt;
     char buff[256];
     time_t tempoTotal;
     struct tm * infoTempo;
@@ -161,20 +161,20 @@ std::string RespostaServidor::getStatus(int resp, int tamanho, std::string difus
                "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
                "Keep-Alive: timeout=5, max=100\r\n"
                "Conexão: Keep-Alive\r\n"
-               "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
+               "Tipo de Conteúdo: " + gt.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     }
     else if(resp == 2){
         text = "HTTP/1.1 404 NOT FOUND\r\n"
                 "Data: " + std::string(buff) +
                 "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
                 "Conexão: Close\r\n"
-                "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
+                "Tipo de Conteúdo: " + gt.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     } else {
         text = "HTTP/1.1 400 BAD REQUEST\r\n"
                 "Data: " + std::string(buff) +
                 "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
                 "Conexão: Close\r\n"
-                "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
+                "Tipo de Conteúdo: " + gt.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     }
     return text;
 }
