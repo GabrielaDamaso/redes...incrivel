@@ -35,6 +35,7 @@ SocketClass::SocketClass(int porta, std::string host)
 
 
 void SocketClass::criarConfigSocket(struct sockaddr_in& servidor,int porta, std::string host){
+
     inet_aton(host.c_str(), &servidor.sin_addr);
     servidor.sin_port = htons(porta);
     servidor.sin_family = AF_INET;
@@ -58,12 +59,12 @@ int SocketClass::listenSocket(int req) {
 
 int SocketClass::askOK() {
 
-    return accept(socketAux, (struct sockaddr*)&endereçoCliente, &endereçoClienteTamanho);
+    return accept(socketAux, (struct sockaddr*)&endereçoCliente, &tamanhoEndCliente);
 }
 
 
 
-Buffer SocketClass::bufferReceptor(int &socketAux){
+Bufferzin SocketClass::bufferReceptor(int &socketAux){
 
     Buffer datarec;
     datarec.tamBuffer = recv(socketAux, datarec.dadosC, maxSizeRecv, 0);
