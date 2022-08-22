@@ -14,11 +14,11 @@
 
 #define Debug false
 
-void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in endereçoCliente, std::string dir){
+void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in endereçoCliente, std::string caminho){
     if(Debug){
        std::cout << "ID DO THREAD: " << thread_id << std::endl;
     }
-    std::string strRequest = "";
+    std::string solicitarString = "";
     std::vector<string> difusao;
     std::vector<string> leituraDeLinhas;
 
@@ -26,59 +26,59 @@ void RepostaServidor::getResponse(int thread_id, int clienteSockfd, sockaddr_in 
         return;
     }
 
-    char ipstr[INET_ADDRSTRLEN] = {'\0'};
-    inet_ntop(endereçoCliente.sin_family, &endereçoCliente.sin_addr, ipstr, sizeof(ipstr));
+    char ipString[INET_ADDRSTRLEN] = {'\0'};
+    inet_ntop(endereçoCliente.sin_family, &endereçoCliente.sin_addr, ipString, sizeof(ipString));
     if(Debug){
-        std::cout << "Conexão iniciada com o cliente " << ipstr << ":" << ntohs(endereçoCliente.sin_port) << std::endl << std::endl;
+        std::cout << "Conexão iniciada com o cliente " << ipString << ":" << ntohs(endereçoCliente.sin_port) << std::endl << std::endl;
     }
-    databuff datarec = socli.sockrecv(clienteSockfd);
-    if(datarec.bufflen > 0){
-        strRequest = std::string(datarec.dataChar, 0, datarec.bufflen);
+    databuff datarec = cleanSock.sockrecv(clienteSockfd);
+    if(datarec.bufftamanho > 0){
+        solicitarString = std::string(datarec.dataChar, 0, datarec.bufftamanho);
         if(Debug){
-            std::cout<< strRequest << std::endl;
+            std::cout<< solicitarString << std::endl;
         }
-        leituraDeLinhas = split(strRequest,'\n');
+        leituraDeLinhas = split(solicitarString,'\n');
         leituraDeLinhas = split(leituraDeLinhas[0],' ');
         difusao = split(leituraDeLinhas[1],'.');
         try {
             if(leituraDeLinhas[0] == "GET"){
                 if(Debug){
                     std::cout<<"É uma requisição get."<<std::endl;
-                    std::cout<<"Pasta Desejada: "<<leituraDeLinhas[1]<<std::endl;
+                    std::cout<<"Pasta escolhida: "<<leituraDeLinhas[1]<<std::endl;
                     std::cout<<"Extensão: "<<difusao[difusao.size()-1]<<std::endl;
                 }
-                getControl(thread_id,clienteSockfd,endereçoCliente, dir+leituraDeLinhas[1],difusao[difusao.size()-1], dir);
+                getControl(thread_id,clienteSockfd,endereçoCliente, caminho+leituraDeLinhas[1],difusao[difusao.size()-1], caminho);
             }
             else {
                 throw (leituraDeLinhas[0]);
             }
         } catch(std::string n) {
-            int len = 0;
+            int tamanho = 0;
             std::string aux = "", data="";
             aux = "400 BAD REQUEST\n\r";
-            len = aux.size();
-            data = getStatus(3, len, "html");
+            tamanho = aux.size();
+            data = getStatus(3, tamanho, "Html");
             if(Debug){
                 std::cout << data << std::endl;
             }
             data += aux;
-            socli.socksendk(clienteSockfd, data);
-            socli.closesock(clienteSockfd);
+            cleanSock.socksendk(clienteSockfd, data);
+            cleanSock.closesock(clienteSockfd);
         }
     }
     else {
         if(Debug){
-            std::cout<<"Tempo limite de requisição atingido!"<<std::endl;
+            std::cout<<"Tempo limite do requerimento atingido!"<<std::endl;
         }
-        this->socli.closesock(clienteSockfd);
+        this->cleanSock.closesock(clienteSockfd);
 }
-std::vector<string> RespostaServidor::split(std::string str, char delete){
+std::vector<string> RespostaServidor::split(std::string stringAux, char delete){
 
     std::string temp = "";
     std::vector<string> leituraDeStrings;
     for(int i =0; i < (int)str.size(); i++){
-    if(str[i] != delete){
-            temp += str[i];
+    if(stringAux[i] != delete){
+            temp += stringAux[i];
         }else{
             leituraDeStrings.push_back(temp);
             temp = "";
@@ -87,57 +87,57 @@ std::vector<string> RespostaServidor::split(std::string str, char delete){
     leituraDeStrings.push_back(temp);
     return leituraDeStrings;
 }
-int RespostaServidor::getControl(int thread_id, int clienteSockfd, sockaddr_in endereçoCliente, std::string raiz,std::string difusao, string dir){
+int RespostaServidor::getControl(int thread_id, int clienteSockfd, sockaddr_in endereçoCliente, std::string raiz,std::string difusao, string caminho){
     std::string n, data;
-    int len;
+    int tamanho;
     if(Debug){
         std::cout<< "raiz " << raiz << std::endl;
     }
     n = data = "";
-    if(fluxoArquivos(raiz, len, n)) {
-        data = getStatus(1, len, difusao);
+    if(fluxoArquivos(raiz, tamanho, n)) {
+        data = getStatus(1, tamanho, difusao);
         data += n;
-        socli.socksendk(clienteSockfd, data);
-        handleRequest(thread_id, clienteSockfd,endereçoCliente, dir);
+        cleanSock.socksendk(clienteSockfd, data);
+        handleRequest(thread_id, clienteSockfd,endereçoCliente, caminho);
     } else {
-        data = getStatus(2, len, "html");
+        data = getStatus(2, tamanho, "Html");
         data+= n;
-        socli.socksendk(clienteSockfd, data);
-        socli.closesock(clienteSockfd);
+        cleanSock.socksendk(clienteSockfd, data);
+        cleanSock.closesock(clienteSockfd);
     }
     return 0;
 }
 
-bool RespostaServidor::fluxoArquivos(std::string raiz, int &len, std::string &n) {
+bool RespostaServidor::fluxoArquivos(std::string raiz, int &tamanho, std::string &n) {
     fstream arquivo;
     arquivo.open(raiz, fstream::in |fstream::out | fstream::binary);
 
     if(arquivo.is_open()){
         arquivo.seekg(0, ios::end);
-        len = arquivo.tellg();
-        leituraArquivo(arquivo, n, len);
+        tamanho = arquivo.tellg();
+        leituraArquivo(arquivo, n, tamanho);
         return true;
     }
     else {
-        arquivo.open("arquivos/404.html", fstream::in |fstream::out | fstream::binary);
+        arquivo.open("Arquivos/404.html", fstream::in |fstream::out | fstream::binary);
         if(arquivo.is_open()) {
             arquivo.seekg(0, ios::end);
-            len = arquivo.tellg();
-            leituraArquivo(arquivo, n, len);
+            tamanho = arquivo.tellg();
+            leituraArquivo(arquivo, n, tamanho);
         } else {
             n = "404 NOT FOUND\n\r";
-            len = n.size();
+            tamanho = n.size();
         }
         return false;
     }
 }
 
-void RespostaServidor::leituraArquivo(fstream &arquivo, std::string &n, int len) {
-    char *aux =  new char[len];
+void RespostaServidor::leituraArquivo(fstream &arquivo, std::string &n, int tamanho) {
+    char *aux =  new char[tamanho];
     arquivo.clear();
     arquivo.seekg(0, ios::beg);
-    arquivo.read(aux, len);
-    for(int i = 0; i < len; i++){
+    arquivo.read(aux, tamanho);
+    for(int i = 0; i < tamanho; i++){
         n += aux[i];
     }
     arquivo.close();
@@ -145,36 +145,36 @@ void RespostaServidor::leituraArquivo(fstream &arquivo, std::string &n, int len)
     aux = nullptr;
 }
 
-std::string RespostaServidor::getStatus(int resp, int len, std::string difusao) {
+std::string RespostaServidor::getStatus(int resp, int tamanho, std::string difusao) {
     std::string text;
     mimetype mim;
     char buff[256];
-    time_t rawtime;
-    struct tm * timeinfo;
-    time (&rawtime);
-    timeinfo = gmtime (&rawtime);
-    strftime(buff, sizeof(buff), "%a, %d %b %Y %H:%M:%S GMT\r\n", timeinfo);
+    time_t tempoTotal;
+    struct tm * infoTempo;
+    time (&tempoTotal);
+    infoTempo = gmtime (&tempoTotal);
+    strftime(buff, sizeof(buff), "%a, %d %b %Y %H:%M:%S GMT\r\n", infoTempo);
 
     if(resp == 1) {
         text = "HTTP/1.1 200 OK\r\n"
-               "Date: " + std::string(buff) +
-               "Content-Length: " + to_string(len) + "\r\n"
+               "Data: " + std::string(buff) +
+               "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
                "Keep-Alive: timeout=5, max=100\r\n"
-               "Connection: Keep-Alive\r\n"
-               "Content-type: " + mim.getType(difusao) + "; charset=UTF-8\r\n\r\n";
+               "Conexão: Keep-Alive\r\n"
+               "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     }
     else if(resp == 2){
         text = "HTTP/1.1 404 NOT FOUND\r\n"
-                "Date: " + std::string(buff) +
-                "Content-Length: " + to_string(len) + "\r\n"
-                "Connection: Close\r\n"
-                "Content-type: " + mim.getType(difusao) + "; charset=UTF-8\r\n\r\n";
+                "Data: " + std::string(buff) +
+                "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
+                "Conexão: Close\r\n"
+                "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     } else {
         text = "HTTP/1.1 400 BAD REQUEST\r\n"
-                "Date: " + std::string(buff) +
-                "Content-Length: " + to_string(len) + "\r\n"
-                "Connection: Close\r\n"
-                "Content-type: " + mim.getType(difusao) + "; charset=UTF-8\r\n\r\n";
+                "Data: " + std::string(buff) +
+                "Tamanho do Conteúdo: " + to_string(tamanho) + "\r\n"
+                "Conexão: Close\r\n"
+                "Tipo de Conteúdo: " + mim.getTipo(difusao) + "; charset=UTF-8\r\n\r\n";
     }
     return text;
 }

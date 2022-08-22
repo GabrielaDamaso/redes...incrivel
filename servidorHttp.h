@@ -27,7 +27,7 @@ class ServidorHttp{
     protected:
         string caminho;  //o diretorio que o servidor sera criado
     private:
-        SocketClass *servidorSock;     //ponteiro p referenciar o socket do servidor
+        SocketClass *servidorSocket;     //ponteiro p referenciar o socket do servidor
 
 }
 

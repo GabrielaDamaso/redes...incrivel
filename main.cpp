@@ -1,6 +1,6 @@
 #include<SocketClass.h>
 #include<servidorHttp.h>
-
+#include <iostream>
 int main(){
     string caminho;
     std::cout<<"Informe o caminho do diretório: ";
